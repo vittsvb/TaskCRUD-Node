@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Task CRUD | Criar</title>
+
+	<link rel="stylesheet" href="/css/style.css">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+	<script>
+		function showDone() {
+			$("#inputDone").removeAttr('disabled');
+			$("#inputDone").val("<%=nameDone%>");
+		}
+
+		function hideDone() {
+			$("#inputDone").attr('disabled', 'disabled');
+			$("#inputDone").val("");
+		}
+	</script>
+
+	<script src="/js/main.js"></script>
+
+</head>
+
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand">Gerenciador de Tarefas</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a>Criar Tarefa</a></li>
+				<li><a href="/listar">Visualizar Tarefas</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container">
+		<form action="<%=action%>" method="POST">
+			<div class="form-group">
+				<label>Nome da tarefa:</label>
+				<input class="form-control" type="text" placeholder="Título" name="titulo" value="<%=data.titulo%>">
+			</div>
+			<div class="form-group">
+				<label>Descrição da tarefa:</label>
+				<textarea class="form-control" type="text" placeholder="Descrição" name="desc"><%=data.desc%></textarea>
+			</div>
+			<div class="form-group">
+				<label>Prioridade:</label>
+				<select class="form-control" name="prioridade">
+					<%var options = [ "0", "1", "2", "3", "4" ];
+					for ( var i = 0; i < options.length; i++ ){		
+						var selected = (data.prioridade == i) ? "selected" : "";%>	
+						<option value="<%=options[i]%>" <%=selected %>>
+							<%=i%>
+						</option>
+					<%}%>
+  				</select>
+			</div>
+			<div class="form-group">
+				<label>Status:</label>
+				<label class="radio-inline">
+				<%if(data.status == "Incompleto"){%>
+      				<input type="radio" name="status" value="Incompleto" checked="checked" onclick="hideDone()">Incompleto
+				<%}else{%>
+					<input type="radio" name="status" value="Incompleto" onclick="hideDone()">Incompleto
+				<%}%>
+    		</label>
+				<label class="radio-inline">
+				<%if(data.status == "Completo"){%>
+      				<input type="radio" name="status" value="Completo" checked="checked" onclick="showDone()">Completo
+				<%}else{%>
+					<input type="radio" name="status" value="Completo" onclick="showDone()">Completo
+				<%}%>
+    		</label>
+			</div>
+			<div class="form-group">
+				<label>Anexos:</label>
+				<label class="btn btn-default btn-file">
+					Browse... <input type="file" style="display: none;">
+				</label>
+			</div>
+			<div class="form-group">
+				<label>Submetido por:</label>
+				<input class="form-control" type="text" placeholder="Nome do usuário" name="name" value="<%=data.name%>">
+			</div>
+			<div class="form-group" id="done">
+				<label>Concluido por:</label>
+				<%if(data.status == "Completo"){%>
+					<input id="inputDone" class="form-control" type="text" placeholder="Nome do usuário" name="nameDone" value="<%=data.nameDone%>">
+				<%}else{%>
+					<input id="inputDone" class="form-control" type="text" placeholder="Nome do usuário" name="nameDone" disabled>
+				<%}%>
+			</div>
+			<button class="btn btn-primary" type="submit">Criar tarefa</button>
+		</form>
+	</div>
+</body>
+
+</html>
